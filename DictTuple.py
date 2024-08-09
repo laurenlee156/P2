@@ -52,7 +52,7 @@ class DictTuple:
                 return dictionary[k]
     def __setitem__(self, k, v):
         if not self.__contains__(k):
-            self.dt[0].append({k: v})
+            self.dt.append({k: v})
             return self.dt
 
         for dictionary in reversed(self.dt):
@@ -68,18 +68,47 @@ class DictTuple:
             dictionary.pop(k, None)
         return self.dt
 
-    #def __call__(self, *args, **kwargs):
+    def __call__(self, k):
+        values_lst = []
+        if not self.__contains__(k):
+            return []
 
+        for dictionary in self.dt:
+            if k in dictionary:
+                values_lst.append(list(dictionary.values()))
 
+        return values_lst
+
+    def __iter__(self):
+        distinct_key_lst = []
+
+        for dictionary in reversed(self.dt):
+            for key in dictionary:
+                if key not in distinct_key_lst:
+                    distinct_key_lst.append(key)
+        return sorted(distinct_key_lst)
+
+    def __eq__(self, *args):
+        first_lst = [(key, value) for dictionary in self.dt for key, value in dictionary.items()]
+        print(first_lst)
+
+        second_lst = [(key, value) for dictionary in list(args) for key, value in dictionary.items()]
+        if first_lst == second_lst:
+            return True
+        return False
 
 #o = DictTuple({'a': 1, 'b': 2, 'c': 3}, {'c': 13, 'd': 14, 'e': 15})
 # #d = DictTuple([{'a': 2, 'b': 3, 'c': 4}])
 #print(o)
+#print(o.__eq__({'a': 1, 'b': 2, 'c': 3}, {'c': 13, 'd': 14, 'e': 15}))
+
 #print(o.__len__())
+#print(o.__iter__())
+#print(o.__call__('k'))
 # print(o.__bool__())
 # # print(o.__repr__())
 # #print(o.__contains__('c'))
 # #print(o.__getitem__('c'))
 # #print(d.__contains__('a'))
-# print(o.__setitem__('adf', 2))
+#print(o.__setitem__('adf', 2))
 #print(o.__delitem__('a'))

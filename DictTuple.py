@@ -92,7 +92,7 @@ class DictTuple:
         first_lst = [(key, value) for dictionary in self.dt for key, value in dictionary.items()]
         print(first_lst)
 
-        second_lst = [(key, value) for dictionary in list(args) for key, value in dictionary.items()]
+        second_lst = [(key, value) for arg in list(args) for key, value in arg.items() if isinstance(arg, dict)]
         if first_lst == second_lst:
             return True
         return False

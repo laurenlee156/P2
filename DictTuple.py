@@ -2,14 +2,15 @@ class DictTuple:
     def __init__(self, *args):
         if len(args) == 0:
             raise AssertionError("DictTuple.__init__: There must be at least one dictionary.")
-        for lst in args:
-            for dictionary in lst:
-                if type(dictionary) is not dict:
+        for arg in args:
+            for dictionary in arg:
+                if not isinstance(dictionary, dict):
                     raise AssertionError("DictTuple.__init__: Each argument must be a dictionary.")
                 if len(dictionary) == 0:
                     raise AssertionError("DictTuple.__init__: Dictionary cannot be empty")
+
         self.dt = list(args)[0]
-        #print(self.dt)
+        print(self.dt)
 
     # count number of distinct keys
     def __len__(self):
@@ -72,7 +73,7 @@ class DictTuple:
 
 #o = DictTuple([{'a': 1, 'b': 2, 'c': 3}, {'c': 13, 'd': 14, 'e': 15}])
 #d = DictTuple([{'a': 2, 'b': 3, 'c': 4}])
-#print(o)
+#(o)
 # print(o.__len__())
 # print(o.__bool__())
 # print(o.__repr__())

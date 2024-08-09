@@ -65,8 +65,8 @@ def mynamedtuple(type_name, field_names, mutable = False, defaults = {}):
     # repr method
     repr_param_str = ""
     for param in field_names_lst:
-        repr_param_str += f"{param} = {{self.{param}}}, "
-    repr_param_str = repr_param_str[:-2]
+        repr_param_str += f"{param}={{self.{param}}},"
+    repr_param_str = repr_param_str[:-1]
 
     repr_final_str = ""
     repr_final_str += "    " + "def __repr__(self):\n"\

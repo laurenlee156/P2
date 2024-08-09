@@ -6,7 +6,7 @@ def mynamedtuple(type_name, field_names, mutable = False, defaults = {}):
     if type_name in keyword.kwlist:
         raise SyntaxError('type_name cannot be a Python keyword.')
     # checks if the first character of type_name is a letter
-    elif not (type_name[0].isalpha()):
+    elif not type_name[0].isalpha():
         raise SyntaxError('type_name must begin with a letter.')
 
     field_names_lst = []
@@ -20,14 +20,18 @@ def mynamedtuple(type_name, field_names, mutable = False, defaults = {}):
     elif type(field_names) is str:
         if len(field_names) > 1:
             if ',' in field_names:
-                field_names = field_names.split(', ')
+                field_names = field_names.split(",")
+                field_names = [field.strip() for field in field_names]
+
                 for field in field_names:
                     if field in keyword.kwlist or not field[0].isalpha() or field in field_names_lst:
                         raise SyntaxError('field_name is invalid.')
                     elif field not in field_names_lst:
                         field_names_lst.append(field)
             else:
-                field_names = field_names.split(' ')
+                field_names = field_names.split(" ")
+                field_names = [field for field in field_names if field.strip()]
+
                 for field in field_names:
                     if field in keyword.kwlist or not field[0].isalpha() or field in field_names_lst:
                         raise SyntaxError('field_name is invalid.')
@@ -64,8 +68,8 @@ def mynamedtuple(type_name, field_names, mutable = False, defaults = {}):
 
     # repr method
     repr_param_str = ""
-    for param in field_names_lst:
-        repr_param_str += f"{param}={{self.{param}}},"
+    for field in field_names_lst:
+        repr_param_str += f"{field}={{self.{field}}},"
     repr_param_str = repr_param_str[:-1]
 
     repr_final_str = ""
@@ -109,26 +113,35 @@ def mynamedtuple(type_name, field_names, mutable = False, defaults = {}):
 
     # _replace method
     replace_method_str = ""
-    replace_method_str += "    " + "def _replace(self, **kargs):" + "\n"\
+    replace_method_str += "    " + "def _replace(self, **kargs):" + "\n" \
+                          + "        " + "if not kargs:" + "\n" \
+                          + "            " + "raise TypeError('kargs cannot be empty')" + "\n" \
                           + "        " + "if self._mutable:" + "\n"\
                           + "          " + "for key in kargs:" + "\n"\
                           + "              " + "if key in self.__dict__:" + "\n"\
                           + "                  " + "self.__dict__[key] = kargs[key]" + "\n"\
+                          + "              " + "else:" + "\n"\
+                          + "                  " + "raise TypeError" + "\n"\
                           + "          " + "return None" + "\n"\
                           + "        " + "else:" + "\n"\
-                          + "          " + "return type(self)(**kargs)"
+                          + "          " + "return " + type_name + "(**kargs)" + "\n"
 
     # __setattr__ method
     # first check if other methods are right
 
-    final_str = init_final_str + repr_final_str + accessor_final_str + indexing_final_str + eq_final_str + as_dict_final_str + make_method_str + replace_method_str
-    #print(final_str)
-    exec(final_str, locals())
-    return locals().get(type_name)
+    # final_str = init_final_str + repr_final_str + accessor_final_str + indexing_final_str + eq_final_str + as_dict_final_str + make_method_str + replace_method_str
+    # print(final_str)
+    # exec(final_str, locals())
+    # return locals().get(type_name)
 
 
-# coordinate = mynamedtuple('coordinate', 'x y')
+# coordinate = mynamedtuple('coordinate', 'x   y')
+# #coordinate1 = mynamedtuple('coordinate', 'x y')
 # p = coordinate(0, 0)
+# #q = coordinate1(0, 0)
+# #print(p.__dict__())
+# #print(p == q)
+# #print(repr(p))
+# #p._replace(x=0, y=5)
 # print(p)
-# print(repr(p))
-# print(p._asdict())
+# #print(p._asdict())

@@ -3,11 +3,11 @@ class DictTuple:
         if len(args) == 0:
             raise AssertionError("DictTuple.__init__: There must be at least one dictionary.")
         for arg in args:
-            for dictionary in arg:
-                if type(dictionary) is not dict:
-                    raise AssertionError("DictTuple.__init__: Each argument must be a dictionary.")
-                if len(dictionary) == 0:
-                    raise AssertionError("DictTuple.__init__: Dictionary cannot be empty")
+            #print(arg)
+            if type(arg) is not dict:
+                raise AssertionError("DictTuple.__init__: Each argument must be a dictionary.")
+            if len(arg) == 0:
+                raise AssertionError("DictTuple.__init__: Dictionary cannot be empty")
 
         self.dt = list(args)
         #print(self.dt)
@@ -16,14 +16,14 @@ class DictTuple:
     def __len__(self):
         distinct_key_lst = []
 
-        for dictionary in self.dt[0]:
+        for dictionary in self.dt:
             for key in dictionary:
                 if key not in distinct_key_lst:
                     distinct_key_lst.append(key)
         return len(distinct_key_lst)
 
     def __bool__(self):
-        if len(self.dt[0]) > 1:
+        if len(self.dt) > 1:
             return True
         else:
             return False
@@ -31,13 +31,14 @@ class DictTuple:
     def __repr__(self):
         repr_str = ""
 
-        for dictionary in self.dt[0]:
+        for dictionary in self.dt:
             repr_str += str(dictionary) + ", "
         repr_str = repr_str[:-2]
         return f"DictTuple({repr_str})"
 
     def __contains__(self, item):
-        for dictionary in self.dt[0]:
+        for dictionary in self.dt:
+            print(dictionary)
             if item in dictionary:
                 return True
         return False
@@ -46,7 +47,7 @@ class DictTuple:
         if not self.__contains__(k):
             raise KeyError("Key does not exist.")
 
-        for dictionary in reversed(self.dt[0]):
+        for dictionary in reversed(self.dt):
             if k in dictionary:
                 return dictionary[k]
     def __setitem__(self, k, v):
@@ -54,7 +55,7 @@ class DictTuple:
             self.dt[0].append({k: v})
             return self.dt
 
-        for dictionary in reversed(self.dt[0]):
+        for dictionary in reversed(self.dt):
             if k in dictionary:
                 dictionary[k] = v
         return self.dt
@@ -63,7 +64,7 @@ class DictTuple:
         if not self.__contains__(k):
             raise KeyError("Key does not exist.")
 
-        for dictionary in self.dt[0]:
+        for dictionary in self.dt:
             dictionary.pop(k, None)
         return self.dt
 
@@ -71,10 +72,10 @@ class DictTuple:
 
 
 
-# o = DictTuple([{'a': 1, 'b': 2, 'c': 3}, {'c': 13, 'd': 14, 'e': 15}])
+#o = DictTuple({'a': 1, 'b': 2, 'c': 3}, {'c': 13, 'd': 14, 'e': 15})
 # #d = DictTuple([{'a': 2, 'b': 3, 'c': 4}])
-# #print(o)
-# print(o.__len__())
+#print(o)
+#print(o.__len__())
 # print(o.__bool__())
 # # print(o.__repr__())
 # #print(o.__contains__('c'))

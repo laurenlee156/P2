@@ -70,7 +70,7 @@ def mynamedtuple(type_name, field_names, mutable = False, defaults = {}):
 
     repr_final_str = ""
     repr_final_str += "    " + "def __repr__(self):\n"\
-                      f"        return f'{type_name} ({repr_param_str})'\n"
+                      f"        return f'{type_name}({repr_param_str})'\n"
 
     # query/accessor methods
     accessor_final_str = ""

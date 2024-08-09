@@ -70,7 +70,7 @@ def mynamedtuple(type_name, field_names, mutable = False, defaults = {}):
 
     repr_final_str = ""
     repr_final_str += "    " + "def __repr__(self):\n"\
-                      + "        " + "return " + "'" + type_name + "(" + repr_param_str + ")" + "'" + "\n"
+                      f"            return f'({type_name} {repr_param_str})'\n"
 
     # query/accessor methods
     accessor_final_str = ""
@@ -102,10 +102,10 @@ def mynamedtuple(type_name, field_names, mutable = False, defaults = {}):
 
     make_method_str = ""
     make_method_str += "    " + "def _make(iterable):" + "\n"\
-                       + "        " + "if len(iterable) != len(self._fields):" + "\n"\
+                       + "        " + "if len(iterable) != len(" + type_name + "._fields):" + "\n"\
                        + "          " + "raise ValueError('iterable length does not match _fields length')" + "\n"\
                        + "        " + "else:" + "\n"\
-                       + "          " + "return self.__class__(*iterable)" + "\n"
+                       + "          " + "return " + type_name + "(*iterable)" + "\n"
 
     # _replace method
     replace_method_str = ""
@@ -122,62 +122,13 @@ def mynamedtuple(type_name, field_names, mutable = False, defaults = {}):
     # first check if other methods are right
 
     final_str = init_final_str + repr_final_str + accessor_final_str + indexing_final_str + eq_final_str + as_dict_final_str + make_method_str + replace_method_str
-    #print(final_str)
+    print(final_str)
     exec(final_str, locals())
     return locals().get(type_name)
 
-#
-# coordinate = mynamedtuple('coordinate', 'x y')
-# p = coordinate(0, 0)
-# print(p)
-# print(repr(p))
-# print(p._asdict())
 
-class DictTuple:
-    def __init__(self, *args):
-        if len(args) == 0:
-            raise AssertionError("DictTuple.__init__: There must be at least one dictionary.")
-        for arg in args:
-            if type(arg) is not dict:
-                raise AssertionError("DictTuple.__init__: Each argument must be a dictionary.")
-            if len(arg) == 0:
-                raise AssertionError("DictTuple.__init__: Dictionary cannot be empty")
-        self.dt = list(args)
-        print(self.dt)
-    # count number of distinct keys
-    def __len__(self):
-        distinct_key_lst = []
-        for dictionary in self.dt:
-            print(dictionary)
-            for key in dictionary:
-                print(key)
-                if key not in distinct_key_lst:
-                    distinct_key_lst.append(key)
-        return len(distinct_key_lst)
-
-    def __bool__(self):
-        if len(self.dt) > 1:
-            return True
-        else:
-            return False
-
-    def __repr__(self):
-        repr_str = ""
-        for dictionary in self.dt:
-            repr_str += str(dictionary) + ", "
-        repr_str = repr_str[:-2]
-        return f"DictTuple({repr_str})"
-
-    def __contains__(self, item):
-        for dictionary in self.dt:
-            if item in dictionary:
-                return True
-            else:
-                return False
-
-    #def __getitem__(self, index):
-
-# o = DictTuple({'c1': 2}, {'c1': 3})
-# print(o.__bool__())
-# print(o.__repr__())
-# print(o.__contains__('c2'))
+coordinate = mynamedtuple('coordinate', 'x y')
+p = coordinate(0, 0)
+print(p)
+print(repr(p))
+print(p._asdict())

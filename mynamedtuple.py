@@ -129,10 +129,10 @@ def mynamedtuple(type_name, field_names, mutable = False, defaults = {}):
     # __setattr__ method
     # first check if other methods are right
 
-    # final_str = init_final_str + repr_final_str + accessor_final_str + indexing_final_str + eq_final_str + as_dict_final_str + make_method_str + replace_method_str
-    # print(final_str)
-    # exec(final_str, locals())
-    # return locals().get(type_name)
+    final_str = init_final_str + repr_final_str + accessor_final_str + indexing_final_str + eq_final_str + as_dict_final_str + make_method_str + replace_method_str
+    #print(final_str)
+    exec(final_str, locals())
+    return locals().get(type_name)
 
 
 # coordinate = mynamedtuple('coordinate', 'x   y')

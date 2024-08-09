@@ -127,8 +127,8 @@ def mynamedtuple(type_name, field_names, mutable = False, defaults = {}):
     return locals().get(type_name)
 
 
-coordinate = mynamedtuple('coordinate', 'x y')
-p = coordinate(0, 0)
-print(p)
+# coordinate = mynamedtuple('coordinate', 'x y')
+# p = coordinate(0, 0)
+# print(p)
 # print(repr(p))
 # print(p._asdict())

@@ -138,16 +138,17 @@ def mynamedtuple(type_name, field_names, mutable = False, defaults = {}):
     set_attr_method_str = ""
     set_attr_method_str += "    " + "def __setattr__(self, name, value):" + "\n"\
                         + "        " + "if not self._mutable:" + "\n"\
-                        + "          " + "raise AttributeError('instance cannot be changed')" + "\n"
+                        + "          " + "raise AttributeError('instance cannot be changed')" + "\n"\
+                        + "        " + "self.__dict__[name] = value"
 
     final_str = init_final_str + repr_final_str + accessor_final_str + indexing_final_str + eq_final_str + as_dict_final_str + make_method_str + replace_method_str + set_attr_method_str
     #print(final_str)
     exec(final_str, locals())
     return locals().get(type_name)
 
-#
+# #
 # coordinate = mynamedtuple('coordinate', 'x   y', mutable = True)
 # p = coordinate(0, 0)
-# # # new_coordinate = p._replace(y=5)
+# # # # new_coordinate = p._replace(y=5)
 # print(p)
 

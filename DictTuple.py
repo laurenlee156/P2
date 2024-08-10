@@ -85,33 +85,15 @@ class DictTuple:
             for key in dictionary:
                 if key not in distinct_key_lst:
                     distinct_key_lst.append(key)
-        return sorted(distinct_key_lst)
+        return iter(sorted(distinct_key_lst))
 
-    # def __eq__(self, other):
-    #     print(self.dt)
-    #
-    #     keys_lst = []
-    #     first_lst = [(key, value) for dictionary in self.dt for key, value in dictionary.items()]
-    #     # for dictionary in self.dt:
-    #     #     for key in dictionary:
-    #     #         keys_lst.append(key)
-    #     # print(keys_lst)
-    #     print('first list', first_lst)
-    #     print(type(other))
-    #     if isinstance(other, DictTuple):
-    #         other = list(other)
-
-
-
-        # first_lst = [(key, value) for dictionary in self.dt for key, value in dictionary.items()]
-        # #print(first_lst)
-        #
-        # second_lst = [(key, value) for arg in list(other) for key, value in arg.items() if isinstance(arg, dict)]
-        # if first_lst == second_lst:
-        #     return True
-        # return False
-
-
+    def __eq__(self, other):
+        # other.dt is a list of dictionaries
+        if type(other) is DictTuple:
+            return self.dt == other.dt
+        else:
+            dict_tuple = [other]
+            return self.dt == dict_tuple
 
     def __add__(self, other):
         lst_of_dt = []
@@ -122,22 +104,16 @@ class DictTuple:
 
         return DictTuple({key: value for dictionary in lst_of_dt for key, value in dictionary.items()})
 
-# o = DictTuple({'a': 1, 'b': 2, 'c': 3}, {'c': 13, 'd': 14, 'e': 15})
+#o = DictTuple({'a': 1, 'b': 2, 'c': 3}, {'c': 13, 'd': 14, 'e': 15})
 # #d = DictTuple([{'a': 2, 'b': 3, 'c': 4}])
 # #print(o)
-# d1 = DictTuple({'c1': (1, 2)}, {'c1': (3, 4)})
-# d2 = DictTuple({'c2': (1, 2)}, {'c3': (3, 4)})
-# print(d1 + d2)
+#d1 = DictTuple({'c1': (1, 2)}, {'c1': (3, 4)})
+#d2 = DictTuple({'c2': (1, 2)}, {'c3': (3, 4)})
+#print(d1 + d2)
 #print(o.__eq__([('a', 1), ('b', 2), ('b', 12), ('c', 13)]))
 #print(o.__eq__(DictTuple({'a': 1, 'b': 2, 'c': 3}, {'c': 13, 'd': 14, 'e': 15})))
 
-#print(o.__len__())
-#print(o.__iter__())
-#print(d.__call__('g'))
-# print(o.__bool__())
-# # print(o.__repr__())
-# #print(o.__contains__('c'))
-# #print(o.__getitem__('c'))
-# #print(d.__contains__('a'))
-#print(o.__setitem__('adf', 2))
-#print(o.__delitem__('a'))
+# c = DictTuple({'a': 1, 'b': 2})
+# d = {'a': 1, 'b': 12}
+#
+# print(c.__eq__(d))

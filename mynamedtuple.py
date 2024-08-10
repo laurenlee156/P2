@@ -5,6 +5,9 @@ def mynamedtuple(type_name, field_names, mutable = False, defaults = {}):
     # checks if any part of type_name is a Python keyword
     if type_name in keyword.kwlist:
         raise SyntaxError('type_name cannot be a Python keyword.')
+    # check the type of type_name
+    elif type(type_name) is not str:
+        raise TypeError('type_name must be a string.')
     # checks if the first character of type_name is a letter
     elif not type_name[0].isalpha():
         raise SyntaxError('type_name must begin with a letter.')
@@ -112,6 +115,11 @@ def mynamedtuple(type_name, field_names, mutable = False, defaults = {}):
                        + "          " + "return " + type_name + "(*iterable)" + "\n"
 
     # _replace method
+    replace_param_str = ""
+    for field in field_names_lst:
+        replace_param_str += f"self.{field},"
+    replace_param_str = replace_param_str[:-1]
+
     replace_method_str = ""
     replace_method_str += "    " + "def _replace(self, **kargs):" + "\n" \
                           + "        " + "if not kargs:" + "\n" \
@@ -124,24 +132,25 @@ def mynamedtuple(type_name, field_names, mutable = False, defaults = {}):
                           + "                  " + "raise TypeError" + "\n"\
                           + "          " + "return None" + "\n"\
                           + "        " + "else:" + "\n"\
-                          + "          " + "return " + type_name + "(**kargs)" + "\n"
+                          + "          " + "current_dict = {field: value for field, value in self.__dict__.items()}" + "\n"\
+                          + "          " + "for key in kargs:" + "\n"\
+                          + "              " + "if key in current_dict:" + "\n"\
+                          + "                  " + "current_dict[key] = kargs[key]" + "\n"\
+                          + "          " + "return " + type_name + "(**current_dict)" + "\n"
+
 
     # __setattr__ method
     # first check if other methods are right
 
     final_str = init_final_str + repr_final_str + accessor_final_str + indexing_final_str + eq_final_str + as_dict_final_str + make_method_str + replace_method_str
-    #print(final_str)
+    print(final_str)
     exec(final_str, locals())
     return locals().get(type_name)
 
-
-# coordinate = mynamedtuple('coordinate', 'x   y')
-# #coordinate1 = mynamedtuple('coordinate', 'x y')
+#
+# coordinate = mynamedtuple('coordinate', 'x   y', mutable = False)
 # p = coordinate(0, 0)
-# #q = coordinate1(0, 0)
-# #print(p.__dict__())
-# #print(p == q)
-# #print(repr(p))
-# #p._replace(x=0, y=5)
-# print(p)
-# #print(p._asdict())
+# new_coordinate = p._replace(y=5)
+# print(p, new_coordinate)
+
+

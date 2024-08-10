@@ -82,10 +82,10 @@ class DictTuple:
         distinct_key_lst = []
 
         for dictionary in reversed(self.dt):
-            for key in dictionary:
+            for key in sorted(dictionary):
                 if key not in distinct_key_lst:
                     distinct_key_lst.append(key)
-        return iter(sorted(distinct_key_lst))
+        return iter(distinct_key_lst)
 
     def __eq__(self, other):
         # other.dt is a list of dictionaries
@@ -113,7 +113,10 @@ class DictTuple:
 #print(o.__eq__([('a', 1), ('b', 2), ('b', 12), ('c', 13)]))
 #print(o.__eq__(DictTuple({'a': 1, 'b': 2, 'c': 3}, {'c': 13, 'd': 14, 'e': 15})))
 
-# c = DictTuple({'a': 1, 'b': 2})
-# d = {'a': 1, 'b': 12}
-#
+# c = DictTuple({'a': 1, 'b': 2}, {'b': 12, 'c': 13})
+# d = DictTuple({'a': 1, 'b': 12}, {'c': 13})
+# #
 # print(c.__eq__(d))
+#
+# f = DictTuple({'b': 1, 'a': 2}, {'e': 12, 'f': 13})
+# print(f.__iter__())

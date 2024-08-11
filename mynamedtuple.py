@@ -67,7 +67,9 @@ def mynamedtuple(type_name, field_names, mutable = False, defaults = {}):
                      + "    " + "_fields = " + str(field_names) + "\n"\
                      + "    " + "_mutable = " + str(mutable) + "\n"\
                      + "    " + "def __init__(self, " + init_param_strings + "):" + "\n"\
-                     + "        " + init_field_strings + "\n"
+                     + "        " + "self._mutable = True" + "\n"\
+                     + "        " + init_field_strings + "\n"\
+                     + "        " + "self._mutable = " + str(mutable) + "\n"
 
     # repr method
     repr_param_str = ""
@@ -139,10 +141,11 @@ def mynamedtuple(type_name, field_names, mutable = False, defaults = {}):
     set_attr_method_str += "    " + "def __setattr__(self, name, value):" + "\n"\
                            + "        " + "if not self._mutable:" + "\n"\
                            + "            " + "if name in self._fields:" + "\n"\
-                           + "                  " + "raise AttributeError('Attributes cannot be changed.')" + "\n"\
+                           + "              " + "raise AttributeError('Attributes cannot be changed.')" + "\n"\
                            + "            " + "else:" + "\n"\
-                           + "                  " + "raise AttributeError('Cannot add new attributes')" + "\n"\
-                           + "        " + "self.__dict__[name] = value" + "\n"
+                           + "              " + "raise AttributeError('Cannot add new attributes')" + "\n"\
+                           + "        " + "else:" "\n"\
+                           + "            " + "self.__dict__[name] = value" + "\n"
 
     final_str = init_final_str + repr_final_str + accessor_final_str + indexing_final_str + eq_final_str + as_dict_final_str + make_method_str + replace_method_str + set_attr_method_str
     #print(final_str)
@@ -152,7 +155,7 @@ def mynamedtuple(type_name, field_names, mutable = False, defaults = {}):
 # coord = mynamedtuple("coordinate", "x y")
 # c = coord(0, 0)
 # c.__setattr__("z", (1, 0))
-# #c.attr2 = coord(1, 0)
-#
-# print(c)
+# # #c.attr2 = coord(1, 0)
+# #
+# # print(c)
 

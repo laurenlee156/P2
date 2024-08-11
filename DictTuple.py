@@ -111,9 +111,13 @@ class DictTuple:
         # dict + DictTuple
         if len(self.dt) == 1 and type(other) is DictTuple:
             other.dt.insert(0, self.dt)
-            #added_dict.append(self.dt)
             return DictTuple(*other.dt)
 
         else:
             raise TypeError("The right operand is not a DictTuple or a dict.")
 
+    def __setattr__(self, name, value):
+        if name != "dt":
+            raise AssertionError("Cannot store new attributes other than dt")
+        else:
+            self.__dict__[name] = value

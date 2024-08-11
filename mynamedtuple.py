@@ -67,9 +67,10 @@ def mynamedtuple(type_name, field_names, mutable = False, defaults = {}):
                      + "    " + "_fields = " + str(field_names) + "\n"\
                      + "    " + "_mutable = " + str(mutable) + "\n"\
                      + "    " + "def __init__(self, " + init_param_strings + "):" + "\n"\
-                     + "        " + "self._mutable = True" + "\n"\
+                     + "        " + "temp = self._mutable" + "\n" \
+                     + "        " + "self._mutable = True" + "\n" \
                      + "        " + init_field_strings + "\n"\
-                     + "        " + "self._mutable = " + str(mutable) + "\n"
+                     + "        " + "self._mutable = temp" + "\n"
 
     # repr method
     repr_param_str = ""
@@ -148,11 +149,10 @@ def mynamedtuple(type_name, field_names, mutable = False, defaults = {}):
     #print(final_str)
     exec(final_str, locals())
     return locals().get(type_name)
-
-#coord = mynamedtuple("coordinate", "x y", mutable = False)
-#c = coord(0, 0)
-#c.__setattr__("x", 1)
-# # #c.attr2 = coord(1, 0)
-# #
-#print(c)
+#
+# coordinate = mynamedtuple("coordinate", "x y", mutable = False)
+# c = coordinate(0, 0)
+# #c.__setattr__("x", 1)
+#
+# print(c)
 

@@ -140,8 +140,6 @@ def mynamedtuple(type_name, field_names, mutable = False, defaults = {}):
                         + "        " + "if not self._mutable:" + "\n"\
                         + "            " + "if name in self.__dict__:" + "\n"\
                         + "                  " + "raise AttributeError('Instance cannot be changed.')" + "\n"\
-                        + "            " + "else:" + "\n"\
-                        + "                  " + "raise AttributeError('Cannot add new attributes.')" + "\n"\
                         + "        " + "else:" + "\n"\
                         + "            " + "self.__dict__[name] = value" + "\n"
 

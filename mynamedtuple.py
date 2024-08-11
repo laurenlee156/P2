@@ -138,7 +138,7 @@ def mynamedtuple(type_name, field_names, mutable = False, defaults = {}):
     set_attr_method_str = ""
     set_attr_method_str += "    " + "def __setattr__(self, name, value):" + "\n"\
                            + "        " + "if not self._mutable:" + "\n"\
-                           + "            " + "if name in self.__dict__:" + "\n"\
+                           + "            " + "if name in self._fields:" + "\n"\
                            + "                  " + "raise AttributeError('Attributes cannot be changed.')" + "\n"\
                            + "            " + "else:" + "\n"\
                            + "                  " + "raise AttributeError('Cannot add new attributes')" + "\n"\

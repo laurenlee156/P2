@@ -9,7 +9,7 @@ def mynamedtuple(type_name, field_names, mutable = False, defaults = {}):
     elif type(type_name) is not str:
         raise TypeError('type_name must be a string.')
     # checks if the first character of type_name is a letter
-    elif not type_name.strip()[0].isalpha():
+    elif not type_name.strip() or not type_name.strip()[0].isalpha():
         raise SyntaxError('type_name must begin with a letter.')
 
     field_names_lst = []
@@ -146,9 +146,7 @@ def mynamedtuple(type_name, field_names, mutable = False, defaults = {}):
     exec(final_str, locals())
     return locals().get(type_name)
 
-# # # #
-# coordinate = mynamedtuple(' hi', 'x   y', mutable = True)
+# coordinate = mynamedtuple( ' coordinate', 'x   y')
 # p = coordinate(0, 0)
-# # # # # # new_coordinate = p._replace(y=5)
 # print(p)
 

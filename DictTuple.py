@@ -58,7 +58,7 @@ class DictTuple:
             if k in dictionary:
                 dictionary[k] = v
                 break
-        return self.dt
+        #return self.dt
 
     def __delitem__(self, k):
         if not self.__contains__(k):
@@ -122,3 +122,6 @@ class DictTuple:
             raise AssertionError("Cannot store new attributes other than dt")
         else:
             self.__dict__[name] = value
+
+#d = DictTuple({'c1': (1, 2)}, {'c1': (3, 4)})
+#print(d.__setitem__('c1', 0))

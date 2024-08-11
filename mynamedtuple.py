@@ -67,10 +67,7 @@ def mynamedtuple(type_name, field_names, mutable = False, defaults = {}):
                      + "    " + "_fields = " + str(field_names) + "\n"\
                      + "    " + "_mutable = " + str(mutable) + "\n"\
                      + "    " + "def __init__(self, " + init_param_strings + "):" + "\n"\
-                     + "        " + "temp = self._mutable" + "\n" \
-                     + "        " + "self._mutable = True" + "\n" \
                      + "        " + init_field_strings + "\n"\
-                     + "        " + "self._mutable = temp" + "\n"
 
     # repr method
     repr_param_str = ""
@@ -140,19 +137,21 @@ def mynamedtuple(type_name, field_names, mutable = False, defaults = {}):
     # __setattr__ method
     set_attr_method_str = ""
     set_attr_method_str += "    " + "def __setattr__(self, name, value):" + "\n"\
-                           + "        " + "if self._mutable == False:" + "\n"\
+                           + "        " + "if name in self._fields:" + "\n"\
+                           + "            " + "if name not in self.__dict__:" + "\n"\
+                           + "                " + "self.__dict__[name] = value" + "\n"\
+                           + "        " + "elif not self._mutable:" + "\n"\
                            + "            " + "raise AttributeError('Cannot change attributes.')" + "\n"\
-                           + "        " + "else:" "\n"\
-                           + "            " + "self.__dict__[name] = value" + "\n"
+
 
     final_str = init_final_str + repr_final_str + accessor_final_str + indexing_final_str + eq_final_str + as_dict_final_str + make_method_str + replace_method_str + set_attr_method_str
     #print(final_str)
     exec(final_str, locals())
     return locals().get(type_name)
-#
+# #
 # coordinate = mynamedtuple("coordinate", "x y", mutable = False)
 # c = coordinate(0, 0)
-# #c.__setattr__("x", 1)
+# # #c.__setattr__("x", 1)
 #
 # print(c)
 

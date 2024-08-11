@@ -90,37 +90,30 @@ class DictTuple:
     def __eq__(self, other):
         # other.dt is a list of dictionaries
         if type(other) is DictTuple:
-            print('self', self.dt)
-            print('other', other.dt)
             return {k: v for dictionary in self.dt for k, v in dictionary.items()} ==  \
                    {k: v for dictionary in other.dt for k, v in dictionary.items()}
         else:
             dict_tuple = [other]
-            print('self', self.dt)
-            print('tuple', dict_tuple)
             return self.dt == dict_tuple
 
     def __add__(self, other):
-        lst_of_dt = []
-        for dictionary in self.dt:
-            lst_of_dt.append(dictionary)
-        for dictionary in other.dt:
-            lst_of_dt.append(dictionary)
+        # DictTuple + DictTuple
+        if type(other) is DictTuple:
+            added_dict = self.dt + other.dt
+            return DictTuple(*added_dict)
 
-        return DictTuple({key: value for dictionary in lst_of_dt for key, value in dictionary.items()})
+        # DictTuple + dict
+        elif type(other) is dict:
+            copy_of_self = self.dt.copy()
+            copy_of_self.append(other)
+            return DictTuple(*copy_of_self)
 
-#o = DictTuple({'a': 1, 'b': 2, 'c': 3}, {'c': 13, 'd': 14, 'e': 15})
-# #d = DictTuple([{'a': 2, 'b': 3, 'c': 4}])
-# #print(o)
-# d1 = DictTuple({'c1': (1, 2)}, {'c1': (3, 4)})
-# d2 = DictTuple({'c2': (1, 2)}, {'c3': (3, 4)})
-# print(d1 + d2)
-#print(o.__eq__([('a', 1), ('b', 2), ('b', 12), ('c', 13)]))
-#print(o.__eq__(DictTuple({'a': 1, 'b': 2, 'c': 3}, {'c': 13, 'd': 14, 'e': 15})))
+        # dict + DictTuple
+        if len(self.dt) == 1 and type(other) is DictTuple:
+            other.dt.insert(0, self.dt)
+            #added_dict.append(self.dt)
+            return DictTuple(*other.dt)
 
-# c = DictTuple({'a': 1, 'b': 2}, {'b': 12, 'c': 13})
-# d = DictTuple({'a': 1, 'b': 12}, {'c': 13})
-# print(c.__eq__(d))
-# #
-# f = DictTuple({'b': 1, 'a': 2}, {'e': 12, 'f': 13})
-# print(f.__iter__())
+        else:
+            raise TypeError("The right operand is not a DictTuple or a dict.")
+

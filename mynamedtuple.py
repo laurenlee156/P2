@@ -6,10 +6,10 @@ def mynamedtuple(type_name, field_names, mutable = False, defaults = {}):
     if type_name in keyword.kwlist:
         raise SyntaxError('type_name cannot be a Python keyword.')
     # check the type of type_name
-    if type(type_name) is not str:
+    elif type(type_name) is not str:
         raise TypeError('type_name must be a string.')
     # checks if the first character of type_name is a letter
-    if not type_name[0].isalpha():
+    elif not type_name.strip()[0].isalpha():
         raise SyntaxError('type_name must begin with a letter.')
 
     field_names_lst = []
@@ -143,13 +143,12 @@ def mynamedtuple(type_name, field_names, mutable = False, defaults = {}):
                         + "        " + "self.__dict__[name] = value" + "\n"
 
     final_str = init_final_str + repr_final_str + accessor_final_str + indexing_final_str + eq_final_str + as_dict_final_str + make_method_str + replace_method_str + set_attr_method_str
-    print(final_str)
     exec(final_str, locals())
     return locals().get(type_name)
 
-# # #
-# coordinate = mynamedtuple('coordinate', 'x   y', mutable = True)
+# # # #
+# coordinate = mynamedtuple(' hi', 'x   y', mutable = True)
 # p = coordinate(0, 0)
-# # # # # new_coordinate = p._replace(y=5)
+# # # # # # new_coordinate = p._replace(y=5)
 # print(p)
 

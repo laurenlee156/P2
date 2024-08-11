@@ -16,7 +16,7 @@ def mynamedtuple(type_name, field_names, mutable = False, defaults = {}):
     if type(field_names) is list:
         for field in field_names:
             if field in keyword.kwlist or not field[0].isalpha() or field in field_names_lst:
-                raise SyntaxError('field_name is invalid.')
+                raise SyntaxError('1field_name is invalid.')
             elif field not in field_names_lst:
                 field_names_lst.append(field)
 
@@ -28,7 +28,7 @@ def mynamedtuple(type_name, field_names, mutable = False, defaults = {}):
 
                 for field in field_names:
                     if field in keyword.kwlist or not field[0].isalpha() or field in field_names_lst:
-                        raise SyntaxError('field_name is invalid.')
+                        raise SyntaxError('2field_name is invalid.')
                     elif field not in field_names_lst:
                         field_names_lst.append(field)
             else:
@@ -37,14 +37,14 @@ def mynamedtuple(type_name, field_names, mutable = False, defaults = {}):
 
                 for field in field_names:
                     if field in keyword.kwlist or not field[0].isalpha() or field in field_names_lst:
-                        raise SyntaxError('field_name is invalid.')
+                        raise SyntaxError('3field_name is invalid.')
                     elif field not in field_names_lst:
                         field_names_lst.append(field)
         elif len(field_names) == 0:
             raise SyntaxError('field_names is empty.')
         else:
             if field_names in keyword.kwlist or not field_names[0].isalpha() or field_names in field_names_lst:
-                raise SyntaxError('field_name is invalid.')
+                raise SyntaxError('4field_name is invalid.')
             elif field_names not in field_names_lst:
                 field_names_lst.append(field_names)
     else:
@@ -149,13 +149,13 @@ def mynamedtuple(type_name, field_names, mutable = False, defaults = {}):
 
 
     final_str = init_final_str + repr_final_str + accessor_final_str + indexing_final_str + eq_final_str + as_dict_final_str + make_method_str + replace_method_str + set_attr_method_str
-    #print(final_str)
+    print(final_str)
     exec(final_str, locals())
     return locals().get(type_name)
+#
+coordinate = mynamedtuple("coordinate", "x y", mutable = False)
+c = coordinate(0, 0)
+# c.__setattr__("y", 1)
 # #
-# coordinate = mynamedtuple("coordinate", "x y", mutable = False)
-# c = coordinate(0, 0)
-# #c.__setattr__("x", 1)
-# #
-# print(c)
+print(c)
 

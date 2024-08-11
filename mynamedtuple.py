@@ -25,10 +25,10 @@ def mynamedtuple(type_name, field_names, mutable = False, defaults = {}):
             if ',' in field_names:
                 field_names = field_names.split(",")
                 field_names = [field.strip() for field in field_names]
-
+                #print(field_names)
                 for field in field_names:
                     if field in keyword.kwlist or not field[0].isalpha() or field in field_names_lst:
-                        raise SyntaxError('2field_name is invalid.')
+                        raise SyntaxError(field_names)
                     elif field not in field_names_lst:
                         field_names_lst.append(field)
             else:
@@ -149,13 +149,13 @@ def mynamedtuple(type_name, field_names, mutable = False, defaults = {}):
 
 
     final_str = init_final_str + repr_final_str + accessor_final_str + indexing_final_str + eq_final_str + as_dict_final_str + make_method_str + replace_method_str + set_attr_method_str
-    print(final_str)
+    #print(final_str)
     exec(final_str, locals())
     return locals().get(type_name)
-#
-coordinate = mynamedtuple("coordinate", "x y", mutable = False)
-c = coordinate(0, 0)
-# c.__setattr__("y", 1)
 # #
-print(c)
+# coordinate = mynamedtuple("coordinate", "a b, c", mutable = False)
+# c = coordinate(0, 0)
+# # c.__setattr__("y", 1)
+# # #
+# print(c)
 

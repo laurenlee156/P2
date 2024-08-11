@@ -138,7 +138,9 @@ def mynamedtuple(type_name, field_names, mutable = False, defaults = {}):
     set_attr_method_str = ""
     set_attr_method_str += "    " + "def __setattr__(self, name, value):" + "\n" \
                            + "        " + "if name in self._fields:" + "\n" \
-                           + "            " + "if name not in self.__dict__ or self._mutable:" + "\n" \
+                           + "            " + "if self._mutable:" + "\n" \
+                           + "                " + "self.__dict__[name] = value" + "\n" \
+                           + "            " + "elif name not in self.__dict__:" + "\n" \
                            + "                " + "self.__dict__[name] = value" + "\n" \
                            + "            " + "else:" + "\n" \
                            + "                " + "raise AttributeError('Cannot change attributes.')" + "\n" \
@@ -151,9 +153,9 @@ def mynamedtuple(type_name, field_names, mutable = False, defaults = {}):
     exec(final_str, locals())
     return locals().get(type_name)
 # #
-coordinate = mynamedtuple("coordinate", "x y", mutable = False)
-c = coordinate(0, 0)
-#c.__setattr__("x", 1)
-#
-print(c)
+# coordinate = mynamedtuple("coordinate", "x y", mutable = False)
+# c = coordinate(0, 0)
+# #c.__setattr__("x", 1)
+# #
+# print(c)
 

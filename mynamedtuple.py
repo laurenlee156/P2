@@ -27,7 +27,7 @@ def mynamedtuple(type_name, field_names, mutable = False, defaults = {}):
                 field_names = [field.strip() for field in field_names]
                 #print(field_names)
                 for field in field_names:
-                    if field in keyword.kwlist or not field[0].isalpha() or field in field_names_lst:
+                    if field in keyword.kwlist or not field[0].isalpha():
                         raise SyntaxError(field_names)
                     elif field not in field_names_lst:
                         field_names_lst.append(field)
@@ -36,14 +36,14 @@ def mynamedtuple(type_name, field_names, mutable = False, defaults = {}):
                 field_names = [field for field in field_names if field.strip()]
 
                 for field in field_names:
-                    if field in keyword.kwlist or not field[0].isalpha() or field in field_names_lst:
+                    if field in keyword.kwlist or not field[0].isalpha():
                         raise SyntaxError('3field_name is invalid.')
                     elif field not in field_names_lst:
                         field_names_lst.append(field)
         elif len(field_names) == 0:
             raise SyntaxError('field_names is empty.')
         else:
-            if field_names in keyword.kwlist or not field_names[0].isalpha() or field_names in field_names_lst:
+            if field_names in keyword.kwlist or not field_names[0].isalpha():
                 raise SyntaxError('4field_name is invalid.')
             elif field_names not in field_names_lst:
                 field_names_lst.append(field_names)
@@ -152,10 +152,10 @@ def mynamedtuple(type_name, field_names, mutable = False, defaults = {}):
     #print(final_str)
     exec(final_str, locals())
     return locals().get(type_name)
-# #
-# coordinate = mynamedtuple("coordinate", "a b, c", mutable = False)
+# # #
+# coordinate = mynamedtuple("coordinate", "x, x, y", mutable = False)
 # c = coordinate(0, 0)
 # # c.__setattr__("y", 1)
 # # #
 # print(c)
-
+#

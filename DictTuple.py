@@ -50,20 +50,23 @@ class DictTuple:
             if k in dictionary:
                 return dictionary[k]
     def __setitem__(self, k, v):
+        if type(k) is int:
+            raise KeyError("Key cannot be mutable")
+
         if not self.__contains__(k):
             self.dt.append({k: v})
             return self.dt
+
 
         for dictionary in reversed(self.dt):
             if k in dictionary:
                 dictionary[k] = v
                 break
-        #return self.dt
+        return self.dt
 
     def __delitem__(self, k):
         if not self.__contains__(k):
             raise KeyError("Key does not exist.")
-
         for dictionary in self.dt:
             dictionary.pop(k, None)
         return self.dt
@@ -123,5 +126,5 @@ class DictTuple:
         else:
             self.__dict__[name] = value
 
-#d = DictTuple({'c1': (1, 2)}, {'c1': (3, 4)})
-#print(d.__setitem__('c1', 0))
+# d = DictTuple({'c1': (1, 2)}, {'c1': (3, 4)})
+# print(d.__setitem__('d', 0))

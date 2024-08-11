@@ -50,13 +50,12 @@ class DictTuple:
             if k in dictionary:
                 return dictionary[k]
     def __setitem__(self, k, v):
-        if type(k) is int:
+        if type(k) is not str:
             raise KeyError("Key cannot be mutable")
 
         if not self.__contains__(k):
             self.dt.append({k: v})
             return self.dt
-
 
         for dictionary in reversed(self.dt):
             if k in dictionary:
@@ -126,5 +125,5 @@ class DictTuple:
         else:
             self.__dict__[name] = value
 
-# d = DictTuple({'c1': (1, 2)}, {'c1': (3, 4)})
-# print(d.__setitem__('d', 0))
+# d = DictTuple({'c': (1, 2)}, {'c1': (3, 4)})
+# print(d.__setitem__('', 0))

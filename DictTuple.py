@@ -57,6 +57,7 @@ class DictTuple:
         for dictionary in reversed(self.dt):
             if k in dictionary:
                 dictionary[k] = v
+                break
         return self.dt
 
     def __delitem__(self, k):

@@ -1,19 +1,19 @@
 class DictTuple:
     def __init__(self, *args):
+        # Check exceptions for args.
         if len(args) == 0:
             raise AssertionError("DictTuple.__init__: There must be at least one dictionary.")
         for arg in args:
-            #print(arg)
             if type(arg) is not dict:
                 raise AssertionError("DictTuple.__init__: Each argument must be a dictionary.")
             if len(arg) == 0:
                 raise AssertionError("DictTuple.__init__: Dictionary cannot be empty")
 
         self.dt = list(args)
-        #print(self.dt)
 
     # count number of distinct keys
     def __len__(self):
+        # Create distinct_key_lst to eliminate duplicates.
         distinct_key_lst = []
 
         for dictionary in self.dt:
@@ -33,6 +33,7 @@ class DictTuple:
 
         for dictionary in self.dt:
             repr_str += str(dictionary) + ", "
+        # Account for extra commas and/or spaces.
         repr_str = repr_str[:-2]
         return f"DictTuple({repr_str})"
 
@@ -43,6 +44,7 @@ class DictTuple:
         return False
 
     def __getitem__(self, k):
+        # Checks if the key is in the dictionary. If not, raise KeyError.
         if not self.__contains__(k):
             raise KeyError("Key does not exist.")
 
@@ -54,6 +56,7 @@ class DictTuple:
             raise KeyError("Key cannot be mutable")
 
         if not self.__contains__(k):
+            # Add the dictionary to self.dt.
             self.dt.append({k: v})
             return self.dt
 
@@ -61,12 +64,13 @@ class DictTuple:
             if k in dictionary:
                 dictionary[k] = v
                 break
-        return self.dt
 
     def __delitem__(self, k):
         if not self.__contains__(k):
             raise KeyError("Key does not exist.")
+
         for dictionary in self.dt:
+            # Pop the key from the dictionary it exists in.
             dictionary.pop(k, None)
         return self.dt
 
@@ -77,8 +81,8 @@ class DictTuple:
 
         for dictionary in self.dt:
             if k in dictionary:
+                # Convert dictionary.values() to a list in order to maintain the desired format.
                 values_lst.append(list(dictionary.values()))
-
         return values_lst
 
     def __iter__(self):
@@ -91,8 +95,8 @@ class DictTuple:
         return iter(distinct_key_lst)
 
     def __eq__(self, other):
-        # other.dt is a list of dictionaries
         if type(other) is DictTuple:
+            # Checks if the contents of self.dt is exactly equal to the contents of other.dt.
             return {k: v for dictionary in self.dt for k, v in dictionary.items()} ==  \
                    {k: v for dictionary in other.dt for k, v in dictionary.items()}
         else:
@@ -125,5 +129,3 @@ class DictTuple:
         else:
             self.__dict__[name] = value
 
-# d = DictTuple({'c': (1, 2)}, {'c1': (3, 4)})
-# print(d.__setitem__('', 0))
